@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/dist/style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="h-screen flex flex-col justify-center items-center bg-gradient-to-r from-neutral-300 to-stone-400">
+
+        <div class="w-96 border h-auto bg-slate-500  pb-5">
+            <h1 class="pt-5 px-5 flex justify-center">My todo list</h1>
+            <div class="px-5 ">
+                <input type="text" placeholder="Todos" class="px-5" id="input">
+                <button class="border bg-white px-2  w-50 text-black rounded-m" id="btn">Add</button>
+
+            </div>
+            <!-- holding div -->
+            <div id="track" class="flex flex-col  px-5 border border-1px m-10">
+                <h2 class="flex items-center justify-center p-5">Uncompleted Task</h2>
+
+            </div>
+            <!-- completed task -->
+            <div class=" px-5 flex flex-col border border-1px m-10" id="complete">
+                <h2 class="flex items-center justify-center m-5">completed Task</h2>
+            </div>
+
+            <div class="flex mx-5">
+                <button class="border bg-white px-2 w-50 text-black" id="update-btn">Update task</button>
+            </div>
+            <!-- counter -->
+            <div id="task-count" class="px-5">
+                <p>Uncompleted: 0, Completed: 0</p>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+
+    <script>
+
+        let inputContainer = document.getElementById('input');
+        let buttonContainer = document.getElementById('btn')
+        let divContainer = document.getElementById('track')
+        let taskCountDisplay = document.getElementById('task-count')
+        let completedTask = 0
+        let uncompletedTask = 0
+
+
+        buttonContainer.addEventListener('click', () => {
+            let divTrack = document.createElement('p')
+            divTrack.innerHTML = inputContainer.value
+            let check = document.createElement('input')
+            check.type = 'checkbox'
+            divTrack.append(check)
+            divContainer.appendChild(divTrack)
+            inputContainer.value = ""
+            uncompletedTask++;
+            updateTaskCount();
+
+            check.addEventListener('change', () => {
+                if (check.checked === true) {
+                    let completeContainer = document.getElementById('complete')
+                    completeContainer.appendChild((divTrack))
+                    divTrack.style.textDecoration = 'line-through'
+                    divTrack.style.color = 'gray'
+                    divTrack.removeChild(check)
+                    completedTask++;
+                    uncompletedTask--;
+                    updateCounts();
+                } else {
+                    divContainer.appendChild(divTrack);  // Reattach to the uncompleted section (track)
+                    divTrack.style.textDecoration = 'none';
+                    divTrack.style.color = 'black';
+                    divTrack.appendChild(check);
+                    completedTask--;
+                    uncompletedTask++;
+                    updateCounts()
+
+                }
+
+            })
+
+
+
+        })
+
+        function updateTaskCount() {
+            taskCountDisplay.innerHTML = `<p>Uncompleted: ${uncompletedTask}, Completed: ${completedTask}</p>`;
+        }
+        let updateButton = document.getElementById('update-btn');
+        updateButton.addEventListener('click', () => {
+            updateTaskCount();
+        });
+
+    </script>
+</body>
+
+</html>
